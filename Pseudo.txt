@@ -1,0 +1,64 @@
+1. average of two numbers :
+    Input number1
+    Input number2
+    sum = number1 + number2 
+    average = sum / 2
+    Print average 
+
+2. Find cube of a num 
+    Input num 
+    cube = num * num * num 
+    Print cube 
+
+
+pseudo: routine 
+    Function FindCube(num)
+        cube = num * num * num 
+        Return cube 
+    
+
+pseudo: routine test
+    Procedure TestFindCube()
+        Input num 
+        cube = FindCube(num)
+        Print cube 
+3.Find square of a number
+Input num 
+    square = num * num  
+    Print square
+
+
+pseudo: routine 
+    Function FindSquare(num)
+        cube = num * num 
+        Return square 
+    
+
+pseudo: routine test
+    Procedure TestFindSquare()
+        Input num 
+        cube = FindSquare(num)
+        Print square 
+
+4.Swap Two numbers
+
+Input number1
+Input number2
+declare variable number3
+number3 = number1
+number1 = number2
+number2 = number3
+print number1,number2
+
+5.To check number is divisile by 3
+pseudo: routine 
+    function IsDivisibleBy3(num)
+        if num % 3 == 0
+            return True 
+        else 
+            return False 
+        
+6.print N natural numbers
+Pseudo:
+Input N
+Print Numbers from 
