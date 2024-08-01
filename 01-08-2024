@@ -127,6 +127,7 @@ class Program
         Console.ReadKey();
     }        
 }
+
 4.//Minimal Salary Of Doctors
 
 class MinimalSalaryOfDoctors
@@ -180,5 +181,40 @@ class MinimalSalaryOfDoctors
 //Enter salary for doctor 1: 1000
 //Enter salary for doctor 2: 100000
 //The minimum salary among the doctors is: 3000
+
+5.class  ReadAndFindSumOfDoctorsSalariesTillZerodowhile()
+{
+
+  static void ReadAndFindSumOfDoctorsSalariesTillZero()
+  {
+    int sum = 0 ;
+    do 
+    {
+        Console.Write("Enter salary");
+        int salary = int.Parse(Console.ReadLine());
+        if (salary < 0 ) //Invalid salary
+        {
+            Console.WriteLine("ENTER valid salary");
+            continue ;
+        }
+        
+        if (salary != 0) // Business Rule
+        {
+            sum += salary;
+        } 
+    } while (salary != 0);
+      Console.WriteLine($"sum is : {sum}");
+  }
+
+
+ static void Main(string[] args) 
+    {
+        ReadAndFindSumOfDoctorsSalariesTillZero();
+        Console.WriteLine("Press any key to contine...");
+        Console.ReadKey();
+    }
+    
+    
+}
 
     
