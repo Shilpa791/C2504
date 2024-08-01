@@ -1,0 +1,131 @@
+1. To Test if doctor salary is min 6 digits or not
+class TestIsDoctorSalaryMin6DigitsOrNot
+{
+   
+    static bool IsDoctorSalaryMin6Digits(int doctorSalary)
+    {
+        int salary = doctorSalary;
+
+        int count = 0;
+        while (salary > 0)
+        {
+            int digit = salary % 10;
+            count += 1;
+            salary = salary / 10;
+        }
+
+        return count >= 6;
+    }
+   
+    static void TestIsDoctorSalaryMin6DigitsOrNot()
+    {
+        int doctorSalary = int.Parse(Console.ReadLine());
+        if(IsDoctorSalaryMin6Digits(doctorSalary))
+        { 
+            Console.WriteLine("Doctor gets 6 digits salary");
+        }
+        else
+        {
+            Console.WriteLine("Doctor does not get 6 digits salary");
+        }
+    }
+    static void Main(string[] args)
+    {
+        TestIsDoctorSalaryMin6DigitsOrNot();
+        Console.WriteLine("Press any key to contine...");
+        Console.ReadKey();
+    }
+   }
+2.To test the count min 6 digits salaried doctors
+class TestCountMin6DigitsSalariedDoctors 
+{
+   
+    static bool IsDoctorSalaryMin6Digits(int doctorSalary) 
+    {
+        return doctorSalary >= 100000;
+    }
+
+    static int CountMin6DigitsSalariedDoctors(int [] salaries, int size)
+    {
+        int count = 0;
+        for(int I = 0; I <= size-1; I++)
+        { 
+            if (IsDoctorSalaryMin6Digits(salaries[I]))
+            {
+                count += 1;
+            }
+        }
+        return count;
+    }
+   
+    static void TestCountMin6DigitsSalariedDoctors()
+    {
+        Console.Write("Number of Doctors:");
+        int size = int.Parse(Console.ReadLine());
+        Console.WriteLine("Enter one by one doctors salries.");
+        int[] salaries = new int[size]; 
+        for (int I = 0; I <= size - 1; I++)
+        {
+            Console.Write($"Salary of {I + 1}th Doctor:");
+            salaries[I] = int.Parse(Console.ReadLine());
+        }
+        int sixDigitsSalariedCount = CountMin6DigitsSalariedDoctors(salaries, size);
+        Console.WriteLine($"Number of Min 6 Digits Salaried Doctors : {sixDigitsSalariedCount}");
+    }
+
+    static void Main(string[] args) 
+    {
+        Console.WriteLine("TestCountMin6DigitsSalariedDoctors");
+        TestCountMin6DigitsSalariedDoctors();
+        Console.WriteLine("End TestCountMin6DigitsSalariedDoctors");
+        Console.ReadKey();
+    }
+}
+3.To check is doctor salary is min 6 digits
+class TestIsDoctorSalaryMin6Digits
+{
+   
+    static bool IsDoctorSalaryMin6Digits(int doctorSalary)
+    {
+        int salary = doctorSalary;
+
+        int count = 0;
+        while (salary > 0)
+        {
+            int digit = salary % 10;
+            count += 1;
+            salary = salary / 10;
+        }
+
+        return count >= 6;
+    }
+    
+    static void TestIsDoctorSalaryMin6Digits()
+    {
+        int doctorSalary = int.Parse(Console.ReadLine());
+        if( IsDoctorSalaryMin6Digits(doctorSalary) )
+        {
+            Console.WriteLine("Doctor gets 6 digits salary");
+        }
+    }
+    static void Main(string[] args) 
+    {
+        TestIsDoctorSalaryMin6Digits();
+        Console.WriteLine("min 6 digit salary");
+        Console.ReadKey();
+    } 
+4.String Interpolation
+using System;
+class Program
+{
+    
+    static void Main(string[] args) 
+    {
+        string name = "Mahesh";
+        int age = 45;
+        Console.WriteLine($"Name:{name}, age:{age}");
+        Console.ReadKey();
+    }        
+}
+
+    
