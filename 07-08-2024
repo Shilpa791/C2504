@@ -1,0 +1,29 @@
+SELECT * FROM DEPT; -- normalized
+SELECT * FROM EMP;	-- normalized 
+-- unormalized table [Sarika, Minnu, Nivya] 
+	-- join 
+SELECT EMP.*, DEPT.* 
+FROM EMP INNER JOIN DEPT ON (EMP.DEPTNO = DEPT.DEPTNO);
+
+
+-- to display emp cols, dept cols for matched dept
+DROP VIEW IF EXISTS EMP_DEPT;
+CREATE VIEW EMP_DEPT 
+AS 
+SELECT EMP.*, DEPT.DNAME, DEPT.LOC  
+FROM EMP INNER JOIN DEPT ON (EMP.DEPTNO = DEPT.DEPTNO);
+
+SELECT * FROM DEPT; -- normalized
+SELECT * FROM EMP;	-- normalized 
+-- unormalized table [Sarika, Minnu, Nivya] 
+	-- join 
+SELECT EMP.*, DEPT.* 
+FROM EMP INNER JOIN DEPT ON (EMP.DEPTNO = DEPT.DEPTNO);
+
+
+-- to display emp cols, dept cols for matched dept
+DROP VIEW IF EXISTS EMP_DEPT;
+CREATE VIEW EMP_DEPT 
+AS 
+SELECT EMP.*, DEPT.DNAME, DEPT.LOC  
+FROM EMP INNER JOIN DEPT ON (EMP.DEPTNO = DEPT.DEPTNO);
