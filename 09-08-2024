@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=.05, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ <p>   this is b keey gii</p>
+ <ol type="i" start="24">
+    <li>it1</li>
+    <li>it2</li>
+    <li>it3</li>
+ </ol>
+ <ul >
+    <li>it1</li>
+    <li>it2</li>
+    <li>it3</li>
+ </ul>
+ &copy;
+&pound;
+&euro;
+
+
+ <table border="1">
+    <thead>
+        <tr>
+            <th>TIME TABLE</th>
+            <th>Period1</th>
+            <th>Period2</th>
+            <th>Period3</th>
+            <th>Period4</th>
+        </tr>
+        
+    </thead>
+    <tbody>
+        <tr>
+            <th>Monday</th>
+            <td>Science</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td>Hindi</td>
+        <tr>
+            <th>Tuesday</th>
+            <td>Science</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td>Hindi</td>
+        </tr>
+        <tr>
+            <th>Wednesday</th>
+            <td>Science</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td>Hindi</td>
+        </tr>
+        <tr>
+            <th>Thursday</th>
+            <td>Science</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td>Hindi</td>
+        </tr>
+        <tr>
+            <th>Friday</th>
+            <td>Science</td>
+            <td>Maths</td>
+            <td>English</td>
+            <td>Hindi</td>
+        </tr>
+    </tbody>
+ </table>
+ <iframe src="https://www.google.com" frameborder="1" height="300" width="400"></iframe>
+</body>
+</html>
