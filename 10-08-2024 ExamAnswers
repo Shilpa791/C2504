@@ -3,7 +3,7 @@ Problem: Given a `Sales` table
 with columns `SaleAmount` and `SaleDate`,
 find the day with the highest total sales.
 
->>>SELECT SaleDate, SUM( SaleAmount) AS TotalSaleAmount FROM Sales GROUP BY SaleDate ORDER BY TotalSaleAmount DESC;
+>>>SELECT TOP 1 SaleDate, SUM( SaleAmount) AS TotalSaleAmount FROM Sales GROUP BY SaleDate ORDER BY TotalSaleAmount DESC;
 
 2 .Find Customers with Multiple Orders
 Problem: Given a `Customers` table and an `Orders` table
@@ -40,7 +40,14 @@ CustomerID INT,
 OrderDate DATE
 );
 
->>>SELECT CustomerId,Max(OrderDate) AS RecentOrder FROM Orders  GROUP BY CustomerID;
+>>>SELECT o.CustomerID, o.OrderID, o.OrderDate
+FROM Orders o
+JOIN (
+    SELECT CustomerID, MAX(OrderID) AS MaxOrderID
+    FROM Orders
+    GROUP BY CustomerID
+) latest
+ON o.CustomerID = latest.CustomerID AND o.OrderID = latest.MaxOrderID;
 
 4.  Find the Second Highest Salary
 Problem: Given an `Employees` table
@@ -64,5 +71,5 @@ SaleAmount DECIMAL(10, 2),
 SaleDate DATE
 );
 
->>>SELECT SalesPersonID,SUM(SaleAmount) AS TotalSalesAmount FROM Sales GROUP BY SalesPersonID ORDER BY TotalSalesAmount DESC;
+>>>SELECT TOP 3 SalesPersonID,SUM(SaleAmount) AS TotalSalesAmount FROM Sales GROUP BY SalesPersonID ORDER BY TotalSalesAmount DESC;
 
