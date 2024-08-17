@@ -1,0 +1,71 @@
+using System;
+
+public class Medication
+{
+    public string MedicationID { get; set; }
+    public int DosagePerDay { get; set; }
+
+    public Medication(string medicationID, int dosagePerDay)
+    {
+        MedicationID = medicationID;
+        DosagePerDay = dosagePerDay;
+    }
+
+    public bool Equals(Medication other)
+    {
+        return DosagePerDay == other.DosagePerDay;
+    }
+
+    public bool NotEquals(Medication other)
+    {
+        return DosagePerDay != other.DosagePerDay;
+    }
+
+    public bool GreaterThan(Medication other)
+    {
+        return DosagePerDay > other.DosagePerDay;
+    }
+
+    public bool GreaterThanEquals(Medication other)
+    {
+        return DosagePerDay >= other.DosagePerDay;
+    }
+
+    public bool LessThan(Medication other)
+    {
+        return DosagePerDay < other.DosagePerDay;
+    }
+
+    public bool LessThanEquals(Medication other)
+    {
+        return DosagePerDay <= other.DosagePerDay;
+    }
+
+    static void Main()
+    {
+        Medication m1 = new Medication("M001", 100);
+        Medication m2 = new Medication("M002", 150);
+
+        Console.WriteLine(m1.Equals(m2));
+        Console.WriteLine(m1.NotEquals(m2));
+        Console.WriteLine(m1.GreaterThan(m2));
+        Console.WriteLine(m1.GreaterThanEquals(m2));
+        Console.WriteLine(m1.LessThan(m2));
+        Console.WriteLine(m1.LessThanEquals(m2));
+        Console.ReadKey();
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+OUTPUT
+
+
+False
+True
+False
+False
+True
+True
