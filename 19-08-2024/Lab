@@ -1,0 +1,140 @@
+
+
+
+
+DIFFRENCE BETWEEN ABSTRACT CLASS AND INTERFACE
+
+
+
+
+
+
+An abstract class is a blueprint for other classes. It can have both complete methods (with code) and incomplete methods (without code, just a signature). 
+
+The incomplete methods are meant to be overridden by subclasses that inherit from the abstract class.
+
+Use an abstract class when you have a base class that shares some common behavior (methods with code) among all its subclasses but also requires some methods to be implemented differently by each subclass.
+
+
+
+
+An interface is like a contract that a class must follow. It only has method signatures (no code) and possibly constants.
+
+Any class that implements an interface agrees to provide the code for all of its methods.
+
+When to Use: Use an interface when you want to define a common behavior that can be shared across different classes that might not be related to each other by inheritance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==========================================================================================================================================================================================
+
+Older Version (Before C# 8.0):
+In versions of C# before 8.0, interfaces could only contain method signatures without any implementation. All methods had to be implemented by any class that inherited the interface.
+
+Example:
+
+// C# 7.0 and earlier
+public interface IShape
+{
+    double CalculateArea();
+}
+
+public class Circle : IShape
+{
+    public double Radius { get; set; }
+
+    public Circle(double radius)
+    {
+        Radius = radius;
+    }
+
+    // Must implement the interface method
+    public double CalculateArea()
+    {
+        return Math.PI * Radius * Radius;
+    }
+}
+
+public class Square : IShape
+{
+    public double SideLength { get; set; }
+
+    public Square(double sideLength)
+    {
+        SideLength = sideLength;
+    }
+
+    // Must implement the interface method
+    public double CalculateArea()
+    {
+        return SideLength * SideLength;
+    }
+}
+Newer Version (C# 8.0 and Later):
+Starting with C# 8.0, interfaces can have default implementations for methods. This means that you can provide a body for a method in the interface itself. Classes implementing the interface are not required to override these methods unless they want to provide their own specific implementation.
+
+Example:
+
+// C# 8.0 and later
+public interface IShape
+{
+    double CalculateArea();
+
+    // Default implementation
+    double CalculatePerimeter()
+    {
+        // Default implementation can be provided
+        // This can be overridden by implementing classes if needed
+        return 0;
+    }
+}
+
+public class Circle : IShape
+{
+    public double Radius { get; set; }
+
+    public Circle(double radius)
+    {
+        Radius = radius;
+    }
+
+    public double CalculateArea()
+    {
+        return Math.PI * Radius * Radius;
+    }
+
+    // Uses the default implementation of CalculatePerimeter unless overridden
+}
+
+public class Square : IShape
+{
+    public double SideLength { get; set; }
+
+    public Square(double sideLength)
+    {
+        SideLength = sideLength;
+    }
+
+    public double CalculateArea()
+    {
+        return SideLength * SideLength;
+    }
+
+    // Optionally override the default implementation of CalculatePerimeter
+    public double CalculatePerimeter()
+    {
+        return 4 * SideLength;
+    }
+}
