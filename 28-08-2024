@@ -1,0 +1,94 @@
+class Pgm
+{
+    static void Main()
+    {
+        string data = "  ABCD.  ";
+        Console.WriteLine(data.Trim());
+        Console.WriteLine(data.TrimStart());
+        Console.WriteLine(data.TrimEnd());
+
+        Console.WriteLine(data.StartsWith(" "));
+        Console.WriteLine(data.EndsWith("."));
+
+        Console.WriteLine(data.Contains(" "));
+        Console.WriteLine(data.Remove(0, 3));
+        Console.WriteLine(data.Replace(" ", "_"));
+}
+}
+===========================================================================================================================================================
+class p
+{
+ var arr = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, };
+ var lar = arr.Take(5).Max();
+ var small = arr.Skip(5).Min();
+ Console.ReadKey();
+}
+
+class Progm
+{
+
+static void Main()
+{
+          var s = "HelloWorld";
+//            var CountedItems = new List<int>();
+//            foreach(var @char in s)
+//            {
+//                if (CountedItems.Contains(@char))
+//                    continue;
+//                CountedItems.Add(@char);
+//                Console.WriteLine($"counting: {@char}");
+//                int count = 0;
+//                foreach(var ch in s)
+//               if(ch == @char)
+//                        count++;
+//                Console.WriteLine($"count is {count}");
+//            }
+//        }
+//    }
+//}
+=================================================================================================================================================================================
+class Program
+
+
+{
+    static void Main()
+    {
+  
+        var a = "abcedfe";
+
+        var b = "eghjiklaabcd";
+
+        var largest = a.Length > b.Length ? a : b;
+
+        var smallest = a.Length < b.Length ? a : b;
+
+        var withoutDups = string.Empty;
+
+        foreach (var item in largest)
+
+        {
+
+            if (!withoutDups.Contains(item))
+
+                withoutDups += item;
+
+        }
+
+        foreach (var item in withoutDups)
+
+        {
+
+            if (smallest.Contains(item))
+
+            {
+
+                Console.WriteLine($"Found: {item}");
+
+            }
+
+        }
+        Console.ReadKey();
+    }
+}
+
+
