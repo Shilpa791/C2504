@@ -1,0 +1,318 @@
+Prescription
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CRUD
+{
+    internal class Prescription
+
+        {
+            public int DoctorId;
+            public string PatientName;
+            public string Medication;
+            public decimal Dosage;
+
+            public Prescription(int _docid, string _pname, string _medication, decimal _dosage)
+            {
+                DoctorId = _docid;
+                PatientName = _pname;
+                Medication = _medication;
+                Dosage = _dosage;
+            }
+
+            public override string ToString()
+            {
+                return $"[DoctorId={DoctorId},PatientName={PatientName},Medication={Medication},Dosage={Dosage}]";
+            }
+        }
+    }
+================================================================================================================================================================================================
+ PrescriptionDAO
+
+
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CRUD
+{
+    internal class PrescriptionDAO
+    {
+        private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Week4AssessmentDb;Integrated Security=True";
+
+        // Create a new Trainer
+        public void Create(Prescription prescription)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Prescription (DoctorId, PatientName,Medication, Dosage) VALUES (@DoctorId, @PatientName, @Medication , @Dosage)";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DoctorId", prescription.DoctorId);
+                cmd.Parameters.AddWithValue("@PatientName", prescription.PatientName);
+                cmd.Parameters.AddWithValue("@Medication", prescription.Medication);
+                cmd.Parameters.AddWithValue("@Dosage", prescription.Dosage);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Read a Trainer by ID
+        public Prescription Read(int id)
+        {
+            Prescription prescription = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT DoctorId, PatientName, Medication, Dosage FROM Prescription WHERE DoctorId = @DoctorId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DoctorId", id);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    prescription = new Prescription((int)reader["DoctorId"], reader["PatientName"].ToString(),
+                         reader["Medication"].ToString(), Convert.ToDecimal(reader["Dosage"]));
+                }
+            }
+            return prescription;
+        }
+
+        // Update a Trainer
+        public void Update(Prescription prescription)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Prescription SET DoctorId = @DoctorId, PatientName = @PatientName, Medication = @Medication ,Dosage = @Dosage WHERE DoctorId = @DoctorId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DoctorId", prescription.DoctorId);
+                cmd.Parameters.AddWithValue("@PatientName", prescription.PatientName);
+                cmd.Parameters.AddWithValue("@Medication", prescription.Medication);
+                cmd.Parameters.AddWithValue("@Dosage", prescription.Dosage);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Delete a Trainer by ID
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "DELETE FROM Prescription WHERE DoctorId = @DoctorId";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DoctorId", id);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // List all Trainers
+        public List<Prescription> ListAll()
+        {
+            List<Prescription> prescription = new List<Prescription>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT DoctorId, PatientName, Medication, Dosage FROM Prescription";
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Prescription prescription1 = new Prescription((int)reader["DoctorId"], reader["PatientName"].ToString(),
+                         reader["Medication"].ToString(), Convert.ToDecimal(reader["Dosage"]));
+                    prescription.Add(prescription1);
+                }
+            }
+            return prescription;
+        }
+    }
+}
+
+====================================================================================================================================================================
+PrescUI
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CRUD
+{
+    internal class PrescUI { 
+     private PrescriptionDAO prescriptionDAO = new PrescriptionDAO();
+
+    public void CreateTrainer()
+    {
+
+        Console.Write("Enter DoctorId: ");
+        int Id = int.Parse(Console.ReadLine());
+        Console.Write("Enter Patient Name: ");
+        string PatientName = Console.ReadLine();
+        Console.Write("Enter Medication: ");
+        string Medication = Console.ReadLine();
+        Console.Write("Enter Dosage: ");
+        decimal Dosage = decimal.Parse(Console.ReadLine());
+
+        Prescription prescription = new Prescription(1, PatientName, Medication, Dosage);
+
+        prescriptionDAO.Create(prescription);
+        Console.WriteLine("Prescription created successfully.");
+    }
+
+    public void ReadTrainer()
+    {
+        Console.Write("Enter Trainer ID: ");
+        int id = int.Parse(Console.ReadLine());
+
+        Prescription prescription = prescriptionDAO.Read(id);
+        if (prescription != null)
+        {
+            Console.WriteLine($"DoctorID: {prescription.DoctorId}");
+            Console.WriteLine($"PatientName: {prescription.PatientName}");
+            Console.WriteLine($"Medication: {prescription.Medication}");
+            Console.WriteLine($"Dosage: {prescription.Dosage}");
+        }
+        else
+        {
+            Console.WriteLine(" not found.");
+        }
+    }
+
+    public void UpdateTrainer()
+    {
+        Console.Write("Enter Doctor ID: ");
+        int id = int.Parse(Console.ReadLine());
+
+        Prescription prescription = prescriptionDAO.Read(id);
+        if (prescription != null)
+        {
+                Console.Write("Enter new DoctorId: ");
+                int Id = int.Parse(Console.ReadLine());
+                Console.Write("Enter new Patient Name: ");
+                string PatientName = Console.ReadLine();
+                Console.Write("Enter  new Medication: ");
+                string Medication = Console.ReadLine();
+                Console.Write("Enter new Dosage: ");
+                decimal Dosage = decimal.Parse(Console.ReadLine());
+
+                prescriptionDAO.Update(prescription);
+            Console.WriteLine(" updated successfully.");
+        }
+        else
+        {
+            Console.WriteLine(" not found.");
+        }
+    }
+
+    public void DeleteTrainer()
+    {
+        Console.Write("Enter Doctor ID: ");
+        int id = int.Parse(Console.ReadLine());
+
+        prescriptionDAO.Delete(id);
+        Console.WriteLine(" deleted successfully.");
+    }
+
+    public void ListAllTrainers()
+    {
+        List<Prescription> prescriptions = prescriptionDAO.ListAll();
+        foreach (Prescription prescription in prescriptions)
+        {
+            Console.WriteLine($"DoctorID: {prescription.DoctorId}, PatientName: {prescription.PatientName}, Medication: {prescription.Medication}, Dosage: {prescription.Dosage}");
+        }
+    }
+}
+}
+========================================================================================================================================================================================================
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CRUD
+{
+    internal class PMenu
+    {
+        public static void Menu()
+        {
+            PrescUI ui = new PrescUI();
+            bool running = true;
+
+            while (running)
+            {
+                Console.WriteLine("\nPrescription");
+                Console.WriteLine("1. Create ");
+                Console.WriteLine("2. Read ");
+                Console.WriteLine("3. Update ");
+                Console.WriteLine("4. Delete ");
+                Console.WriteLine("5. List All Prescription");
+                Console.WriteLine("6. Exit");
+
+                Console.Write("Choose an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        ui.Create();
+                        break;
+                    case "2":
+                        ui.Read();
+                        break;
+                    case "3":
+                        ui.Update();
+                        break;
+                    case "4":
+                        ui.Delete();
+                        break;
+                    case "5":
+                        ui.ListAllPrescription();
+                        break;
+                    case "6":
+                        running = false;
+                        Console.WriteLine("Exiting...");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+            }
+        }
+    }
+}
+=========================================================================================================================================================================================
+Main
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CRUD
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            PMenu.Menu();
+            Console.ReadKey();
+        }
+    }
+}
+
