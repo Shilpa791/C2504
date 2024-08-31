@@ -1,0 +1,203 @@
+using System;
+using System.Data.SqlClient;
+using log4net;
+
+namespace week4
+{
+    public class DoctorPrescription
+    {
+        public int DoctorId { get; set; }
+        public string PatientName { get; set; }
+        public string Medication { get; set; }
+        public double Dosage { get; set; }
+
+        public override string ToString()
+        {
+            return $"[{DoctorId}, {PatientName}, {Medication}, {Dosage}]";
+        }
+    }
+
+    public class DoctorPrescriptionService
+    {
+        private static string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Week4AssessmentDb;Integrated Security=True";
+
+        public static void Read(DoctorPrescription[] doctorPrescriptions)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT DoctorId, PatientName, Medication, Dosage FROM DoctorPrescription";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    for (int i = 0; i < doctorPrescriptions.Length; i++)
+                    {
+                        if (!reader.Read())
+                        {
+                            throw new ServerException("[0101] Server Error.");
+                        }
+                        doctorPrescriptions[i] = new DoctorPrescription
+                        {
+                            DoctorId = (int)reader["DoctorId"],
+                            PatientName = reader["PatientName"].ToString(),
+                            Medication = reader["Medication"].ToString(),
+                            Dosage = Convert.ToDouble(reader["Dosage"])
+                        };
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new ServerException($"[0102] Server Error. {ex.Message}");
+            }
+            catch (ServerException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new ServerException($"[0103] Server Error. {ex.Message}");
+            }
+        }
+
+        public static void SortByDosage(DoctorPrescription[] doctorPrescriptions)
+        {
+            for (int i = 0; i < doctorPrescriptions.Length - 1; i++)
+            {
+                int minIndex = i;
+                for (int j = i + 1; j < doctorPrescriptions.Length; j++)
+                {
+                    if (doctorPrescriptions[j] != null && doctorPrescriptions[j].Dosage < doctorPrescriptions[minIndex].Dosage)
+                    {
+                        minIndex = j;
+                    }
+                }
+                DoctorPrescription temp = doctorPrescriptions[minIndex];
+                doctorPrescriptions[minIndex] = doctorPrescriptions[i];
+                doctorPrescriptions[i] = temp;
+            }
+        }
+
+        public static void SortByPatientName(DoctorPrescription[] doctorPrescriptions)
+        {
+            for (int i = 0; i < doctorPrescriptions.Length - 1; i++)
+            {
+                int minIndex = i;
+                for (int j = i + 1; j < doctorPrescriptions.Length; j++)
+                {
+                    if (doctorPrescriptions[j] != null && string.Compare(doctorPrescriptions[j].PatientName, doctorPrescriptions[minIndex].PatientName) < 0)
+                    {
+                        minIndex = j;
+                    }
+                }
+                DoctorPrescription temp = doctorPrescriptions[minIndex];
+                doctorPrescriptions[minIndex] = doctorPrescriptions[i];
+                doctorPrescriptions[i] = temp;
+            }
+        }
+
+        public static DoctorPrescription FindMinDosage(DoctorPrescription[] doctorPrescriptions)
+        {
+            double min = double.MaxValue;
+            DoctorPrescription minDoctorPrescription = null;
+
+            foreach (var prescription in doctorPrescriptions)
+            {
+                if (prescription != null && prescription.Dosage < min)
+                {
+                    minDoctorPrescription = prescription;
+                    min = prescription.Dosage;
+                }
+            }
+
+            return minDoctorPrescription;
+        }
+
+        public static DoctorPrescription FindThirdMaxDosage(DoctorPrescription[] doctorPrescriptions)
+        {
+            double max = double.MinValue;
+            double secondMax = double.MinValue;
+            double thirdMax = double.MinValue;
+
+            DoctorPrescription maxDoctorPrescription = null;
+            DoctorPrescription secondMaxDoctorPrescription = null;
+            DoctorPrescription thirdMaxDoctorPrescription = null;
+
+            foreach (var prescription in doctorPrescriptions)
+            {
+                if (prescription == null) continue;
+
+                if (prescription.Dosage > max)
+                {
+                    thirdMax = secondMax;
+                    thirdMaxDoctorPrescription = secondMaxDoctorPrescription;
+                    secondMax = max;
+                    secondMaxDoctorPrescription = maxDoctorPrescription;
+                    max = prescription.Dosage;
+                    maxDoctorPrescription = prescription;
+                }
+                else if (prescription.Dosage > secondMax && prescription.Dosage != max)
+                {
+                    thirdMax = secondMax;
+                    thirdMaxDoctorPrescription = secondMaxDoctorPrescription;
+                    secondMax = prescription.Dosage;
+                    secondMaxDoctorPrescription = prescription;
+                }
+                else if (prescription.Dosage > thirdMax && prescription.Dosage != max && prescription.Dosage != secondMax)
+                {
+                    thirdMax = prescription.Dosage;
+                    thirdMaxDoctorPrescription = prescription;
+                }
+            }
+
+            return thirdMaxDoctorPrescription;
+        }
+    }
+
+    public class Program
+    {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Program));
+        static void Main(string[] args)
+        {
+            DoctorPrescription[] doctorPrescriptions = new DoctorPrescription[4];
+            try
+            {
+                DoctorPrescriptionService.Read(doctorPrescriptions);
+            }
+            catch (ServerException ex)
+            {
+                //*log.Error($"{ex.Message}");
+                 Console.WriteLine($"{ex.Message}");
+            }
+
+            DoctorPrescription min = DoctorPrescriptionService.FindMinDosage(doctorPrescriptions);
+            //log.Info($"Min Dosage:{min}");
+            Console.WriteLine($"Min Dosage: {min}");
+
+            DoctorPrescription thirdMax = DoctorPrescriptionService.FindThirdMaxDosage(doctorPrescriptions);
+            //log.Info($"Third Max Dosage:{thirdMax}");
+            Console.WriteLine($"Third Max Dosage: {thirdMax}");
+
+            DoctorPrescriptionService.SortByPatientName(doctorPrescriptions);
+
+            string output = "";
+            foreach (var prescription in doctorPrescriptions)
+            {
+                if (prescription != null)
+                {
+                    output += prescription.ToString() + " ";
+                }
+            }
+            Console.WriteLine(output.Trim());
+            Console.ReadKey();
+        }
+    }
+
+    public class ServerException : Exception
+    {
+        public ServerException(string message) : base(message) { }
+    }
+}
